@@ -1,56 +1,54 @@
-## docker-php-dev ##
+# docker-php-dev
 
-Function
+**Function**
+
 Set up a dockerised PHP development environment:
-* PHP 8.1.8 + GD support for image manipulation.
-* Apache2
-* Webroot is a bindmount to a working directory in your user account.
+* Apache2 webserver.
+* PHP 8.1.8 + GD library support for image manipulation.
+* Webroot is a bindmounted to a working directory on the host machine.
 
-Configuration
-* To change the PHP version, update the version number in the FROM line of the dockerfile
-and rebuild the image:
+**Configuration**
 
-FROM php:8.1.8-apache # Increment the version number 
+You must edit **docker-compose.yml** to specify the name of your user account. 
 
-* To change the location of the working directory, change the path in the volumes
-section of docker-compose.yml:
+```/home/yourUserName/www:/var/www/ # change the account name to your own```
 
-volumes:
-    - /home/username/www:/var/www/
-  working_dir: /var/www/html
+You can also change the location of the bindmounted webserver volume here by specifying a different path (preserve the indentation as it is important; note that a leading dash has been ommitted here because of a markdown conflict). 
 
-Usage
-1. Build the docker-php-dev image:
+Similarly, you can change the location of the working directory by specifying a different path in docker-compose.yml:
 
-Usage: sudo docker build . -t "phpdev"
+```working_dir: /var/www/html```
 
-2. Deploy a docker-php-dev container
+To change the PHP version, update the version number in the FROM line in the **dockerfile** and rebuild the image:
 
-Usage: docker-compose -p yourprojectname up -d 
+```FROM php:8.1.8-apache # Increment the version number as per valid image on dockerhub```
+  
+**Usage**
 
-Your new environment
+Run the following commands **from within the docker-php-dev directory**:
 
-1. The host machine directory /home/username/www will be mapped to /var/www in the 
-container. Any files you place in the host directory will be available to the 
-webserver, so you can just work from there.
+1. Build the php-dev image:
 
-2. The actual webroot is /home/username/www/html, which maps to /var/www/html in the
-container. Files you want to be publicly accessible must be placed in there. (The 
-value of having the non-public www directory above is as a safe haven for files you
-don't want to put in the web root, such as libraries, configuration files and so on).
+```sudo docker build . -t "phpdev"```
 
-3. Permissions matter. The webserver container runs as the www-data user, and so the
-files you place in the host directory also need to be accessible to www-data. Change
+2. Deploy a php-dev container
+
+```docker-compose -p yourprojectname up -d```
+
+**Your new environment**
+
+The host machine directory /home/yourUserName/www will be mapped to /var/www in the webserver container. Any files you place in the host directory will be available to the webserver, so you can just work from there.
+
+The actual webroot is /home/username/www/html, which maps to /var/www/html in the container. Files you want to be publicly accessible must be placed in there. (The 
+value of having the non-public www directory above is as a safe haven for files you don't want to put in the web root, such as libraries, configuration files and so on).
+
+Permissions matter. The webserver container runs as the www-data user, and so the files you place in the host directory also need to be accessible to www-data. Change
 ownership to www-data like this:
 
-sudo chown -R www-data:www-data /home/username/www
+```sudo chown -R www-data:www-data /home/username/www```
 
-While editing files from the host machine, you will need to sudo to gain temporary
-privileges. Note that any new files you create will be owned by root, so you will
-need to chown them to www-data:www-data. There are probably better ways of handling
-this.
+While editing files from the host machine, you will need to sudo to gain temporary privileges. Note that any new files you create will be owned by root, so you will need to chown them to www-data:www-data. Probably better ways of handling this, but I haven't got around to finding one.
 
-4. Upgrades: You can upgrade the PHP version or edit the image configuration at
-any time by modifying the dockerfile, rebuilding the image and re-deploying the
-container via compose. Your data / the web root will persist as it is on a
-bindmount volume, even if you delete the container.
+**Upgrades**
+
+You can upgrade the PHP version or edit the image configuration at any time by modifying the dockerfile, rebuilding the image and re-deploying the container via compose as above. Your data will persist even if you delete the container, as it is on a discrete bindmount volumer.

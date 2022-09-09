@@ -1,4 +1,4 @@
-# docker-php-dev
+# php-apache2-gd-docker
 
 **Function**
 

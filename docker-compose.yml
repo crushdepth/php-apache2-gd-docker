@@ -1,7 +1,7 @@
 ##########################################################################
 # Stand up a dev environment for Tuskfish with a bind-mounted directory. #
 # Configuration: Change the username to match your own.                  #
-# Usage: docker-compose -p yourprojectname up -d                         #
+# Usage: docker compose -p yourprojectname up -d                         #
 ##########################################################################
 
 version: '3.7'

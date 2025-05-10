@@ -1,4 +1,4 @@
-# PHP8.3.14 + GD + Apache2
+# PHP8.3.20 + GD + Apache2
 #
 # Creates a development environment for PHP that includes the GD library for image processing.
 # If you want to use this in production, uncomment the USER line (Docker containers should not
@@ -24,7 +24,8 @@ RUN apt update \
     && chmod 0755 /var/www/html \
     && chown -R www-data:www-data /var/www/html
 
-# Containers should be run as an unprivileged user but can specify that in compose.
+# Containers MUST be run as an unprivileged user in production but can specify that in compose.
 # If your system does not have www-data user and group, you will need to create one, or
 # assign a different user/group both here and in docker-compose.yml
-USER www-data:www-data
+# For local (non-production) development, you can skip the user to avoid permission headaches.
+# USER www-data:www-data

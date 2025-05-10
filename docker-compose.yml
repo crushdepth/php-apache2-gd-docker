@@ -12,10 +12,10 @@ services:
     volumes:
       # Customise bind mount a host directory (webserver root) to the container.
       # Change yourUserName/www to suit your own needs.
-      - /home/yourUserName/www:/var/www/
+      - /home/yourUserName/www:/var/www
     working_dir: /var/www/html
     restart: always
     ports:
       - 80:80/tcp
     # If using for PRODUCTION, uncomment the user line below.
-    user: www-data:www-data
+    # user: www-data:www-data

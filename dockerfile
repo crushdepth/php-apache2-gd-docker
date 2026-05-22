@@ -1,4 +1,4 @@
-# PHP8.3.20 + GD + Apache2
+# PHP8.5.6 + GD + Apache2
 #
 # Creates a development environment for PHP that includes the GD library for image processing.
 # If you want to use this in production, uncomment the USER line (Docker containers should not
@@ -6,7 +6,7 @@
 #
 # Usage: docker build . -t "phpdev"
 
-FROM php:8.3.14-apache
+FROM php:8.5.6-apache
 
 COPY ["./php/php.ini", "/usr/local/etc/php/"]
 
